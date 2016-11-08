@@ -1,0 +1,5 @@
+# ignore the conplied file.
+*.pyc
+
+# ignore the datasets floder which will be very large
+datasets/
