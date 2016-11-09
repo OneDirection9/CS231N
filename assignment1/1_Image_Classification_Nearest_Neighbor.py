@@ -31,3 +31,5 @@ if __name__ == "__main__":
     # of examples that are correctly predicted(i.e. label matches)
     print "accuracy:%f" % (np.mean(YtePredict == Yte)) # YtePredict == Yte will generate a bool array. and np.mean calcuate the average value.
     print "********** End of Program **********"
+    
+    # The accuracy is 38.59% in the CIFAR-10 dataset.
