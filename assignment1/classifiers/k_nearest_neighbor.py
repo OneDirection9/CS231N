@@ -35,15 +35,20 @@ class KNearestNeighbor(object):
     - y: A numpy array of shape (num_test,) containing predicted labels for the
       test data, where y[i] is the predicted label for the test point X[i].  
     """
+    print "========== Start Calculating Distances =========="
     if num_loops == 0:
+      print "compute distances no loops"
       dists = self.compute_distances_no_loops(X)
     elif num_loops == 1:
+      print "compute distances one loop"
       dists = self.compute_distances_one_loop(X)
     elif num_loops == 2:
+      print "compute distances two loops"
       dists = self.compute_distances_two_loops(X)
     else:
       raise ValueError('Invalid value %d for num_loops' % num_loops)
-
+    print "********** Calculating Success **********"
+    
     return self.predict_labels(dists, k=k)
 
   def compute_distances_two_loops(self, X):
@@ -71,6 +76,8 @@ class KNearestNeighbor(object):
         # training point, and store the result in dists[i, j]. You should   #
         # not use a loop over dimension.                                    #
         #####################################################################
+        # I leave out the square root operation beacuse square root is a monotonic function.
+        dists[i][j] = np.sum(np.square(X[i] - self.X_train[j]))
         pass
         #####################################################################
         #                       END OF YOUR CODE                            #
@@ -93,6 +100,9 @@ class KNearestNeighbor(object):
       # Compute the l2 distance between the ith test point and all training #
       # points, and store the result in dists[i, :].                        #
       #######################################################################
+      # X[i] - self.X_train: num_train * D
+      # np.sum( num_train * D, axis = 1): num_train
+      dists[i] = np.sum(np.square(X[i] - self.X_train), axis = 1)
       pass
       #######################################################################
       #                         END OF YOUR CODE                            #
@@ -121,6 +131,25 @@ class KNearestNeighbor(object):
     # HINT: Try to formulate the l2 distance using matrix multiplication    #
     #       and two broadcast sums.                                         #
     #########################################################################
+    # (X - X_train)^2 = (X^2 -2X*X_train + X_train^2)
+    # XSquare is 1 * X.shape[0]
+    # each item saves the sum of square number of each pixels in one image.    
+    # responding to the x^2
+    XSquare = np.sum(np.square(X), axis = 1)
+    # XTrainSquare is 1 * self.X_train.shape[0]
+    # each item saves the sum of square number of each pixles in one image.
+    # responding to the X_train^2
+    XTrainSquare = np.sum(np.square(self.X_train), axis = 1)
+    # self.X_train is N*D, and self.X_train.transpose(1, 0) is D*N.
+    # X is M * D, so the XX is M * N.
+    # responding to the X*X_train
+    XX = np.dot(X, self.X_train.transpose(1, 0)) * -2
+    # need to reshape XSquare
+    XSquare = XSquare.reshape(X.shape[0], 1)
+    # In the very end:
+    # XSquare is X.shape[0] * 1, XX is X.shape[0] * self.X_train.shape[0],
+    # XTrainSquare is 1 * self.X_train.shape[0]
+    dists = XSquare + XX + XTrainSquare
     pass
     #########################################################################
     #                         END OF YOUR CODE                              #
@@ -143,6 +172,7 @@ class KNearestNeighbor(object):
     num_test = dists.shape[0]
     y_pred = np.zeros(num_test)
     for i in xrange(num_test):
+      print "Predicting %dth: " % i
       # A list of length k storing the labels of the k nearest neighbors to
       # the ith test point.
       closest_y = []
@@ -153,6 +183,11 @@ class KNearestNeighbor(object):
       # neighbors. Store these labels in closest_y.                           #
       # Hint: Look up the function numpy.argsort.                             #
       #########################################################################
+      # calculate k nearest neighbors of ith test images,
+      # return the index of train images.
+      kNeighborIndex = np.argsort(dists[i])[:k]
+      # get the label of those neighbors
+      closest_y = self.y_train[kNeighborIndex]
       pass
       #########################################################################
       # TODO:                                                                 #
@@ -161,6 +196,8 @@ class KNearestNeighbor(object):
       # Store this label in y_pred[i]. Break ties by choosing the smaller     #
       # label.                                                                #
       #########################################################################
+      # 
+      y_pred[i] = np.bincount(closest_y).argmax()
       pass
       #########################################################################
       #                           END OF YOUR CODE                            # 
