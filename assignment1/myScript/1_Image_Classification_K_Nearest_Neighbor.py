@@ -6,15 +6,25 @@ Created on Wed Nov 09 23:52:39 2016
 
 K nearest neighbors.
 """
+import sys
+sys.path.append("..")
 
 import numpy as np
-import data_utils
-import classifiers.k_nearest_neighbor as kNN
+import cs231n.data_utils as data_utils
+import cs231n.classifiers.k_nearest_neighbor as kNN
+import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
-    Xtr, Ytr, Xte, Yte = data_utils.load_CIFAR10('datasets/cifar10/')   # a magic funtion we provide to load the CIFAR-10 dataset 
+    plt.rcParams['figure.figsize'] = (10.0, 8.0)    # set default size of plots
+    plt.rcParams['image.interpolation'] = 'nearest'
+    plt.rcParams['image.cmap'] = 'gray'
+    
+    Xtr, Ytr, Xte, Yte = data_utils.load_CIFAR10('../cs231n/datasets/cifar10/')   # a magic funtion we provide to load the CIFAR-10 dataset 
     # flatten out all images to be one-dimensional
     # Xtr : 50000 * 32 * 32 * 3; Ytr : 50000
+    
+    # As a sanity check, we print out the size of the training and test data
+    
     Xtr_rows = Xtr.reshape(Xtr.shape[0], 32 * 32 * 3) # Xtr_rows becomes 50000 * 3072
     Xte_rows = Xte.reshape(Xte.shape[0], 32 * 32 * 3) # Xtr_roes becomes 10000 * 3072
     print "********** Loading Dataset Success **********"

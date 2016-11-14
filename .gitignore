@@ -3,3 +3,6 @@
 
 # ignore the datasets floder which will be very large
 datasets/
+
+# ignore floders respond to ipython
+.ipynb_checkpoints/
