@@ -35,21 +35,16 @@ class KNearestNeighbor(object):
     - y: A numpy array of shape (num_test,) containing predicted labels for the
       test data, where y[i] is the predicted label for the test point X[i].  
     """
-    print "========== Start Calculating Distances =========="
     if num_loops == 0:
-      print "compute distances no loops"
       dists = self.compute_distances_no_loops(X)
     elif num_loops == 1:
-      print "compute distances one loop"
       dists = self.compute_distances_one_loop(X)
     elif num_loops == 2:
-      print "compute distances two loops"
       dists = self.compute_distances_two_loops(X)
     else:
       raise ValueError('Invalid value %d for num_loops' % num_loops)
-    print "********** Calculating Success **********"
     
-    return self.predict_labels(dists, k=k)
+    return self.predict_labels(dists, k = k)
 
   def compute_distances_two_loops(self, X):
     """
@@ -118,6 +113,7 @@ class KNearestNeighbor(object):
     """
     num_test = X.shape[0]
     num_train = self.X_train.shape[0]
+
     dists = np.zeros((num_test, num_train)) 
     #########################################################################
     # TODO:                                                                 #
@@ -172,7 +168,6 @@ class KNearestNeighbor(object):
     num_test = dists.shape[0]
     y_pred = np.zeros(num_test)
     for i in xrange(num_test):
-      print "Predicting %dth: " % i
       # A list of length k storing the labels of the k nearest neighbors to
       # the ith test point.
       closest_y = []

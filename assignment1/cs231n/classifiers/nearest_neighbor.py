@@ -30,7 +30,6 @@ class NearestNeighbor(object):
         
         # loop over all test rows
         for i in xrange(num_test):
-            print "Predicting %dth" % i
             # find the nearest training image to the i'th test image
             # using the L1 distance (sum of absolute value difference)
             distances = np.sum(np.abs(self.Xtr - X[i ,:]), axis = 1)    # X[i , :] equals to X[i]: get the ith row of X.
