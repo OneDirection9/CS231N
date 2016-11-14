@@ -19,7 +19,7 @@ if __name__ == "__main__":
     plt.rcParams['image.interpolation'] = 'nearest'
     plt.rcParams['image.cmap'] = 'gray'
     
-    Xtr, Ytr, Xte, Yte = data_utils.load_CIFAR10('../cs231n/datasets/cifar10/')   # a magic funtion we provide to load the CIFAR-10 dataset 
+    Xtr, Ytr, Xte, Yte = data_utils.load_CIFAR10('../cs231n/datasets/cifar-10-batches-py/')   # a magic funtion we provide to load the CIFAR-10 dataset 
     # flatten out all images to be one-dimensional
     # Xtr : 50000 * 32 * 32 * 3; Ytr : 50000
     

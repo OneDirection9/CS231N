@@ -16,7 +16,7 @@ import cs231n.classifiers.nearest_neighbor as nearestNeb
 
 if __name__ == "__main__":
     print "========== Start Loading CIFAR-10 =========="
-    Xtr, Ytr, Xte, Yte = data_utils.load_CIFAR10('../cs231n/datasets/cifar10/')   # a magic funtion we provide to load the CIFAR-10 dataset 
+    Xtr, Ytr, Xte, Yte = data_utils.load_CIFAR10('../cs231n/datasets/cifar-10-batches-py/')   # a magic funtion we provide to load the CIFAR-10 dataset 
     # flatten out all images to be one-dimensional
     # Xtr : 50000 * 32 * 32 * 3; Ytr : 50000
     Xtr_rows = Xtr.reshape(Xtr.shape[0], 32 * 32 * 3) # Xtr_rows becomes 50000 * 3072
