@@ -6,3 +6,9 @@ datasets/
 
 # ignore floders respond to ipython
 .ipynb_checkpoints/
+
+# ignore floders respond to pycharm
+.idea
+
+# ignore .ipynb since those files will be changed when i run them
+*.ipynb
