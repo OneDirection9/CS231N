@@ -29,6 +29,24 @@ def softmax_loss_naive(W, X, y, reg):
   # here, it is easy to run into numeric instability. Don't forget the        #
   # regularization!                                                           #
   #############################################################################
+  num_train = X.shape[0]
+  num_classes = W.shape[1]
+  for i in xrange(num_train):
+      scores = X[i].dot(W)  # scores: a numpy array of shape (1, C)
+      scores -= np.max(scores)
+      correct_class_score = scores[y[i]]
+      
+      exp_sum = np.sum(np.exp(scores))
+      loss += np.log(exp_sum) - correct_class_score
+      
+      dW[:, y[i]] -= X[i]
+      for j in xrange(num_classes):
+          dW[:, j] += (np.exp(scores[j])/exp_sum) * X[i]
+  
+  loss /= num_train
+  loss += 0.5 * reg * np.sum(W * W)
+  dW /= num_train
+  dW += reg*W
   pass
   #############################################################################
   #                          END OF YOUR CODE                                 #
@@ -53,6 +71,17 @@ def softmax_loss_vectorized(W, X, y, reg):
   # here, it is easy to run into numeric instability. Don't forget the        #
   # regularization!                                                           #
   #############################################################################
+  num_train = X.shape[0]
+  # Scores: N * C
+  Scores = X.dot(W)
+  Scores = Scores - np.max(Scores, axis = 1, keepdims = True)
+  correct_class_scores = Scores[np.arange(num_train), y]
+  # compute softmax function value
+  prob = np.exp(Scores) / np.sum(np.exp(Scores), axis = 1, keepdims = True)
+  correct_class_scores = np.zeros_like(prob)
+  correct_class_scores[np.arange(num_train), y] = 1
+  loss += -np.sum(correct_class_scores * np.log(prob)) / num_train + 0.5 * reg * np.sum(W * W)
+  dW += np.dot(X.T, prob - correct_class_scores) / num_train + reg * W
   pass
   #############################################################################
   #                          END OF YOUR CODE                                 #
