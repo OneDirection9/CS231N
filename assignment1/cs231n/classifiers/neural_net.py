@@ -176,7 +176,6 @@ class TwoLayerNet(object):
     # Normalization
     X /= np.std(X, axis = 0)
     """
-    
     # Momentum update
     W1_v, b1_v = 0.0, 0.0
     W2_v, b2_v = 0.0, 0.0
